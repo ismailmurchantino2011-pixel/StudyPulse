@@ -1,0 +1,61 @@
+{
+  "entities": {
+    "userProfile": {
+      "title": "User Profile",
+      "description": "User profile with study preferences, age bracket and sync state",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Auth UID" },
+        "displayName": { "type": "string", "description": "User display name" },
+        "ageProfile": { "type": "string", "enum": ["junior", "academic", "adult"], "description": "Study age profile" },
+        "isPro": { "type": "boolean", "description": "Supporter or unlocked status" },
+        "createdAt": { "type": "string", "description": "ISO timestamp" },
+        "lastActive": { "type": "string", "description": "ISO timestamp" }
+      },
+      "required": ["uid", "isPro"]
+    },
+    "deckCard": {
+      "title": "Flashcard",
+      "description": "Spaced repetition flashcard with SM-2 state",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Card unique ID" },
+        "front": { "type": "string", "description": "Question / front text" },
+        "back": { "type": "string", "description": "Answer / back text" },
+        "category": { "type": "string", "description": "Subject or topic" },
+        "repetitions": { "type": "number", "description": "SM-2 repetition count" },
+        "interval": { "type": "number", "description": "Interval in days" },
+        "easeFactor": { "type": "number", "description": "SM-2 ease factor" },
+        "nextReviewDate": { "type": "string", "description": "Review date YYYY-MM-DD" }
+      },
+      "required": ["id", "front", "back", "easeFactor"]
+    },
+    "accessCode": {
+      "title": "Access License Code",
+      "description": "Direct license or supporter code for manual or peer monetization",
+      "type": "object",
+      "properties": {
+        "code": { "type": "string", "description": "Access voucher code" },
+        "plan": { "type": "string", "enum": ["supporter", "lifetime", "beta"], "description": "Tier granted" },
+        "maxUses": { "type": "number", "description": "Usage limit" },
+        "usedCount": { "type": "number", "description": "Number of times claimed" },
+        "active": { "type": "boolean", "description": "Whether code is redeemable" }
+      },
+      "required": ["code", "plan", "active"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "userProfile",
+      "description": "User study profiles"
+    },
+    "/users/{userId}/flashcards/{cardId}": {
+      "schema": "deckCard",
+      "description": "Individual flashcards per user with SM-2 metadata"
+    },
+    "/accessCodes/{codeId}": {
+      "schema": "accessCode",
+      "description": "Redeemable VIP/supporter access codes"
+    }
+  }
+}

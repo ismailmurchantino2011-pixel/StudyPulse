@@ -1,0 +1,32 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // User profile documents
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+      allow create, update: if isOwner(userId)
+        && request.resource.data.uid == userId;
+      allow delete: if isOwner(userId);
+
+      // Flashcards subcollection
+      match /flashcards/{cardId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
+    // Access codes (read to validate voucher, no client write)
+    match /accessCodes/{codeId} {
+      allow read: if isAuthenticated();
+      allow write: if false; // Managed via server/admin
+    }
+  }
+}
