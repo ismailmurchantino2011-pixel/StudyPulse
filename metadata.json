@@ -1,0 +1,6 @@
+{
+  "name": "StudyPulse - Arquitectura Técnica & Suite EdTech",
+  "description": "Especificaciones técnicas completas, cumplimiento GDPR y EU AI Act, arquitectura de datos y simulador interactivo para la plataforma de estudio inteligente StudyPulse.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
